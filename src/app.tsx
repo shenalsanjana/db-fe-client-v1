@@ -1,71 +1,35 @@
-import { useNprogress } from "src/hooks/use-nprogress";
-import { useRoutes } from "react-router";
-import { routesOutlets } from "src/router";
-import { SidebarProvider, useSidebarContext } from "src/contexts/sidebar-context.tsx";
-import { CustomizationConsumer, CustomizationProvider } from "src/contexts/customization.tsx";
-import { createTheme } from "src/theme";
-import "src/i18n/i18n";
-import "src/global.css";
-import { ThemeProvider } from "@mui/material/styles";
-import { Helmet } from "react-helmet-async";
-import CssBaseline from "@mui/material/CssBaseline";
-import { RtlDirection } from "src/components/base/rtl-direction.tsx";
-import { Toastr } from "src/components/base/toastr.tsx";
-import Notification from "src/shared/alerts/notification.tsx";
-import GlobalLoading from "src/state/loading/loading-component";
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+import './App.css'
 
 function App() {
+  const [count, setCount] = useState(0)
 
-	useNprogress();
-
-	const router = useRoutes(routesOutlets);
-
-	const RenderComponent = () => {
-		const { isSidebarCollapsed, isSidebarHovered } = useSidebarContext();
-
-		if (!isSidebarCollapsed || !isSidebarHovered) {
-			// return null;
-		}
-
-		return router;
-	};
-
-	return (
-		<SidebarProvider>
-			<CustomizationProvider>
-				<CustomizationConsumer>
-					{(settings) => {
-						if (!settings.isInitialized) {
-							// return null
-						}
-
-						const theme = createTheme({
-							colorPreset: settings.colorPreset,
-							direction: settings.direction,
-							paletteMode: settings.paletteMode,
-							layout: settings.layout,
-						});
-
-						return (
-							<ThemeProvider theme={theme}>
-								<Helmet>
-									<meta name="color-scheme" content={settings.paletteMode} />
-									<meta name="theme-color" content={theme.palette.primary.main} />
-								</Helmet>
-								<RtlDirection direction={settings.direction}>
-									<CssBaseline />
-									<RenderComponent />
-									<Notification />
-									<GlobalLoading />
-									<Toastr />
-								</RtlDirection>
-							</ThemeProvider>
-						);
-					}}
-				</CustomizationConsumer>
-			</CustomizationProvider>
-		</SidebarProvider>
-	);
+  return (
+    <>
+      <div>
+        <a href="https://vite.dev" target="_blank">
+          <img src={viteLogo} className="logo" alt="Vite logo" />
+        </a>
+        <a href="https://react.dev" target="_blank">
+          <img src={reactLogo} className="logo react" alt="React logo" />
+        </a>
+      </div>
+      <h1>Vite + React</h1>
+      <div className="card">
+        <button onClick={() => setCount((count) => count + 1)}>
+          count is {count}
+        </button>
+        <p>
+          Edit <code>src/App.tsx</code> and save to test HMR
+        </p>
+      </div>
+      <p className="read-the-docs">
+        Click on the Vite and React logos to learn more
+      </p>
+    </>
+  )
 }
 
-export default App;
+export default App
